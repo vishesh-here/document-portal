@@ -1,4 +1,5 @@
 import os
+import tempfile
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY', 'your-secret-key-123')
@@ -7,8 +8,9 @@ class Config:
     # Database
     def get_db_path(self):
         if os.environ.get('RENDER'):
-            # Use the directory that Render.com provides for persistent storage
-            return os.path.join(os.environ.get('RENDER_VOLUME_PATH', '/tmp'), 'documents.db')
+            # For Render's free tier, use the temp directory
+            temp_dir = tempfile.gettempdir()
+            return os.path.join(temp_dir, 'documents.db')
         return os.path.join(os.path.dirname(os.path.abspath(__file__)), 'instance', 'documents.db')
 
 class DevelopmentConfig(Config):
