@@ -1,11 +1,17 @@
 import sqlite3
+import os
 from datetime import datetime
 from flask import current_app
 from config import Config
 
 def get_db():
     config = Config()
-    conn = sqlite3.connect(config.get_db_path())
+    db_path = config.get_db_path()
+    
+    # Ensure the directory exists
+    os.makedirs(os.path.dirname(db_path), exist_ok=True)
+    
+    conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     return conn
 
