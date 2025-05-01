@@ -7,8 +7,8 @@ class Config:
     # Database
     def get_db_path(self):
         if os.environ.get('RENDER'):
-            os.makedirs('/var/data', exist_ok=True)
-            return '/var/data/documents.db'
+            # Use the directory that Render.com provides for persistent storage
+            return os.path.join(os.environ.get('RENDER_VOLUME_PATH', '/tmp'), 'documents.db')
         return os.path.join(os.path.dirname(os.path.abspath(__file__)), 'instance', 'documents.db')
 
 class DevelopmentConfig(Config):
